@@ -201,7 +201,10 @@ for size, we use it to display a size chart (if applicable)
                   <button type="button" class="Popover__Close Icon-Wrapper--clickable" data-action="close-popover">{% include 'icon' with 'close' %}</button>
                   <span class="Popover__Title Heading u-h4">{{ option.name | escape }}</span>
                 </header>
- {%- for value in option.values -%}
+
+                <div class="Popover__Content">
+                  <div class="Popover__ValueList" data-scrollable>
+                    {%- for value in option.values -%}
                       <button type="button" class="Popover__Value {% if value == option.selected_value %}is-selected{% endif %} Heading Link Link--primary u-h6"
                               data-value="{{ value | escape }}"
                               data-option-position="{{ option.position }}"
@@ -220,9 +223,6 @@ for size, we use it to display a size chart (if applicable)
                           </label>
                       </button>
                     {%- endfor -%}
-                <div class="Popover__Content">
-                  <div class="Popover__ValueList" data-scrollable>
-                   
                   </div>
 
                   {%- assign size_chart_page_handle = settings.size_chart_page | default: 'size-chart' -%}
