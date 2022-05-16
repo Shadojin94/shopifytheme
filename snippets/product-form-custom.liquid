@@ -24,7 +24,27 @@ for size, we use it to display a size chart (if applicable)
           {%- assign is_option_with_color_swatch = false -%}
         {%- endif -%}
 
-       
+        <div style="background-color: aqua;width:500px;height: 200px;display: block;">
+          <label class="container">One
+            <input type="radio" name="bundle" checked="checked">
+            <span class="checkmark"></span>
+          </label>
+          
+          <label class="container">Two
+            <input type="radio" name="bundle">
+            <span class="checkmark"></span>
+          </label>
+          
+          <label class="container">Three
+            <input type="radio" name="bundle">
+            <span class="checkmark"></span>
+          </label>
+          
+          <label class="container">Four
+            <input type="radio" name="bundle">
+            <span class="checkmark"></span>
+          </label>
+        </div>
         <style>
 /* Customize the label (the container) */
 .container {
@@ -201,7 +221,10 @@ for size, we use it to display a size chart (if applicable)
                   <button type="button" class="Popover__Close Icon-Wrapper--clickable" data-action="close-popover">{% include 'icon' with 'close' %}</button>
                   <span class="Popover__Title Heading u-h4">{{ option.name | escape }}</span>
                 </header>
- {%- for value in option.values -%}
+
+                <div class="Popover__Content">
+                  <div class="Popover__ValueList" data-scrollable>
+                    {%- for value in option.values -%}
                       <button type="button" class="Popover__Value {% if value == option.selected_value %}is-selected{% endif %} Heading Link Link--primary u-h6"
                               data-value="{{ value | escape }}"
                               data-option-position="{{ option.position }}"
@@ -210,19 +233,9 @@ for size, we use it to display a size chart (if applicable)
                                 data-background-image="{{ value | handle | append: '.png' | asset_url }}"
                               {% endif %}
                               data-action="select-value">
-                        
-
-
-                        <div style="background-color: aqua;width:500px;height: 200px;display: block;">
-                          <label class="container">{{- value | escape -}}
-                            <input type="radio" name="bundle" checked="checked">
-                            <span class="checkmark"></span>
-                          </label>
+                        {{- value | escape -}}
                       </button>
                     {%- endfor -%}
-                <div class="Popover__Content">
-                  <div class="Popover__ValueList" data-scrollable>
-                   
                   </div>
 
                   {%- assign size_chart_page_handle = settings.size_chart_page | default: 'size-chart' -%}
