@@ -40,7 +40,23 @@ for size, we use it to display a size chart (if applicable)
                   </div>
               {% endfor %}
 
-        
+              <div class="product-variants infiniteoptions">
+                <ul>{% for variant in product.variants %}
+                  <li class="{% cycle 'odds': 'odd', 'even' %}">
+                    {% if variant.available %}<input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" {% if forloop.first %}checked="checked"{% endif %} />
+                      <label for="radio_{{ variant.id }}" class="radio">
+                        <strong>{{ variant.title | escape }}</strong> for <span class="bold-blue">{{ variant.price | money }}</span>
+                        {% if variant.price < variant.compare_at_price %}<del>{{ variant.compare_at_price | money }}</del>{% endif %}
+                      </label>
+                    {% else %}
+                      <input type="radio" name="id" value="{{ variant.id }}" id="radio_{{ variant.id }}" disabled="disabled" />
+                      <label for="radio_{{ variant.id }}" class="radio">
+                        <strong>{{ variant.title }}</strong> is temporarily unavailable
+                      </label>
+                    {% endif %}
+                  </li>
+                {% endfor %}</ul>
+              </div>
         <style>
 /* Customize the label (the container) */
 .container {
