@@ -24,6 +24,30 @@ for size, we use it to display a size chart (if applicable)
           {%- assign is_option_with_color_swatch = false -%}
         {%- endif -%}
 
+        {% for product in collection.products %}
+	{% assign seen_variants ='' %}
+
+	{% for variant in product.variants %}
+		{% assign variant_options = '' %}
+		{% unless product.options[0] == 'Size' %}
+			{% assign variant_options = variant_options | append: ",," | append: variant.option1 %}
+		{% endunless %}
+		{% unless product.options[1] == 'Size' %}
+			{% assign variant_options = variant_options | append: ",," | append: variant.option2 %}
+		{% endunless %}
+		{% unless product.options[2] == 'Size' %}
+			{% assign variant_options = variant_options | append: ",," | append: variant.option3 %}
+		{% endunless %}
+
+		{% assign variant_options = variant_options | replace: ",,", " " | strip %}
+
+		{% unless seen_variants contains variant_options and seen_variants != '' %}
+			{% assign seen_variants = seen_variants | append: ",," | append: variant_options %}
+			... output info ...
+		{% endunless %}
+	{% endfor %}
+{% endfor %}
+
         <div style="background-color: aqua;width:500px;height: 200px;display: block;">
           <label class="container">One
             <input type="radio" name="bundle" checked="checked">
