@@ -10,7 +10,24 @@ for size, we use it to display a size chart (if applicable)
 {%- assign product_popovers = '' -%}
 
 {%- assign selected_variant = product.selected_or_first_available_variant -%}
-
+<form action="/cart/add" method="post" enctype="multipart/form-data">
+  {% for variant in product.variants %}
+  {% if variant.available == true %}
+    <fieldset class="group">
+      <ul class="checkbox">
+        <li>
+          <input type="checkbox" value="{{variant.id}}">
+            <label>{{ variant.title }} for {{ variant.price | money_with_currency }}</label>
+          </input>
+        </li>
+      </ul>
+    </fieldset>
+  {% else %}
+  <option disabled="disabled"> {{ variant.title }} - sold out!</option>
+  {% endif %}
+  {% endfor %}
+  <input type="submit" name="add" id="add" class="inpost-buy w-button" value="Add to Bag →"></input>
+</form>
 {%- form 'product', product, class: 'ProductForm' -%}
   <div class="ProductForm__Variants">
     {%- unless product.has_only_default_variant -%}
