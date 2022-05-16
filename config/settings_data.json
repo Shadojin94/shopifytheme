@@ -1,7 +1,7 @@
 {
   "current": {
-    "heading_color": "#232222",
-    "text_color": "#080808",
+    "heading_color": "#5c5c5c",
+    "text_color": "#5c5c5c",
     "text_light_color": "#939393",
     "link_color": "#323232",
     "background": "#ffffff",
@@ -12,9 +12,9 @@
     "header_background": "#ffffff",
     "header_heading_color": "#5c5c5c",
     "header_light_color": "#939393",
-    "footer_background": "#727272",
-    "footer_heading_color": "#bbcce1",
-    "footer_text_color": "#f3f3f3",
+    "footer_background": "#ffffff",
+    "footer_heading_color": "#5c5c5c",
+    "footer_text_color": "#939393",
     "navigation_background": "#ffffff",
     "navigation_text_color": "#5c5c5c",
     "newsletter_popup_background": "#ffffff",
@@ -63,7 +63,7 @@
     "checkout_logo_position": "center",
     "checkout_logo_size": "small",
     "checkout_body_background_image": "",
-    "checkout_body_background_color": "#fff",
+    "checkout_body_background_color": "#ffffff",
     "checkout_input_background_color_mode": "white",
     "checkout_sidebar_background_image": "",
     "checkout_sidebar_background_color": "#fafafa",
@@ -496,6 +496,27 @@
           "subheading": "Keep updated",
           "title": "Newsletter",
           "content": "<p>Subscribe to receive updates, access to exclusive deals, and more.<\/p>"
+        }
+      },
+      "product-template-custom1": {
+        "type": "product-template-custom1",
+        "settings": {
+          "show_share_buttons": true,
+          "show_vendor": true,
+          "description_below_add_to_cart": false,
+          "show_color_swatch": true,
+          "show_color_carousel": false,
+          "show_quantity_selector": true,
+          "show_inventory_quantity": false,
+          "inventory_quantity_threshold": 0,
+          "show_payment_button": false,
+          "image_size": "large",
+          "enable_image_zoom": true,
+          "show_thumbnails": true,
+          "tab_page_1_handle": "",
+          "tab_page_2_handle": "",
+          "reviews_enabled": false,
+          "featured_image_size": "large"
         }
       }
     },
