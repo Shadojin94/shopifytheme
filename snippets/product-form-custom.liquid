@@ -23,25 +23,7 @@ for size, we use it to display a size chart (if applicable)
         {%- else -%}
           {%- assign is_option_with_color_swatch = false -%}
         {%- endif -%}
-        {%- for value in option.values -%}
-        <button type="button" class="Popover__Value {% if value == option.selected_value %}is-selected{% endif %} Heading Link Link--primary u-h6"
-                data-value="{{ value | escape }}"
-                data-option-position="{{ option.position }}"
-                {% if is_option_with_color_swatch %}
-                  data-background-color="{{ value | replace: ' ', '' }}"
-                  data-background-image="{{ value | handle | append: '.png' | asset_url }}"
-                {% endif %}
-                data-action="select-value">
-          
 
-
-          <div style="background-color: aqua;width:500px;height: 200px;display: block;">
-            <label class="container">{{- value | escape -}}
-              <input type="radio" name="bundle" checked="checked">
-              <span class="checkmark"></span>
-            </label>
-        </button>
-      {%- endfor -%}
        
         <style>
 /* Customize the label (the container) */
@@ -143,26 +125,6 @@ for size, we use it to display a size chart (if applicable)
                 "arrowShape": {"x0": 20, "x1": 60, "y1": 40, "x2": 60, "y2": 35, "x3": 25}
               }
               {%- endcapture -%}
-
-              {%- for value in option.values -%}
-              <button type="button" class="Popover__Value {% if value == option.selected_value %}is-selected{% endif %} Heading Link Link--primary u-h6"
-                      data-value="{{ value | escape }}"
-                      data-option-position="{{ option.position }}"
-                      {% if is_option_with_color_swatch %}
-                        data-background-color="{{ value | replace: ' ', '' }}"
-                        data-background-image="{{ value | handle | append: '.png' | asset_url }}"
-                      {% endif %}
-                      data-action="select-value">
-                
-
-
-                <div style="background-color: aqua;width:500px;height: 200px;display: block;">
-                  <label class="container">{{- value | escape -}}
-                    <input type="radio" name="bundle" checked="checked">
-                    <span class="checkmark"></span>
-                  </label>
-              </button>
-            {%- endfor -%}
 
               <div id="{{ popover_id }}" class="VariantSelector" aria-hidden="true">
                 {%- capture option_index -%}option{{ option.position }}{%- endcapture -%}
