@@ -310,7 +310,40 @@ for size, we use it to display a size chart (if applicable)
                  
         </div>
       </label>
-      
+      <!-- Variants -->
+      <div class="swatches-wrapper swatches-wrapper-ab-testing">
+        <h5 class="desktop-only swatched-title-desktop-only" style="color:#000;">{{ section.settings.variants_title }}</h5>
+        <div class="Variants__flex">
+            {% for variant in product.variants %}
+            <div class="variant__wrapper">
+                
+                {% assign titleVariant = variant.title | split: ' - ' %}
+                {%- capture sf_variant_label_id -%}label_{{forloop.index}}{%- endcapture -%}
+                {%- assign sf_variant_label = product.metafields.sf_variant[sf_variant_label_id] -%}
+                <div class="variant__box variant__box_ab_testing{% if forloop.index == 1 %} swatch-active{% endif %}" data-variant="{{ variant.id }}">
+                    <div class="variant_detail"  data-variant-price="{{ variant.price | money }}" 
+                    data-variant-compare-price="{{ variant.compare_at_price | money }}">
+                        <p class="pack" style="color:#000;">{{ titleVariant[0] }}</p>
+                        <p class="variant__title2" style="color:#000;">{{ titleVariant[1] }}</p>
+                        <p class="variant_price" style="color:#000;">{{ variant.price | money }}</p>
+                        {% if variant.compare_at_price > variant.price %}
+                            <p class="variant_price" style="color:#ff3b30;font-size:14px;text-decoration:line-through;">{{ variant.compare_at_price | money }}</p>
+                        {% endif %}
+                        {%- if sf_variant_label != blank -%}
+                            <div class="variant_discount" style="background-color:#1db67a;">{{ sf_variant_label }}</div>
+                        {% elsif forloop.index > 1 %}
+                            <div class="variant_discount" style="background-color:#1db67a;">
+                                {%- capture sf_variant_label_trans_id -%}products.variants.highlight_{{forloop.index}}{%- endcapture -%}
+                                {{ sf_variant_label_trans_id | t }}
+                            </div>
+                        {% endif %}
+                        
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
       
 </fieldset><script type="application/json">
   [{"id":41175756308655,"title":"Single","option1":"Single","option2":null,"option3":null,"sku":"BLM1","requires_shipping":true,"taxable":true,"featured_image":{"id":32895646433455,"product_id":7105770193071,"position":1,"created_at":"2022-02-09T22:41:03-08:00","updated_at":"2022-02-09T22:41:06-08:00","alt":null,"width":3160,"height":3160,"src":"https:\/\/cdn.shopify.com\/s\/files\/1\/0609\/1531\/8959\/products\/IMG_9234.jpg?v=1644475266","variant_ids":[41175756308655,41175756341423,41175756374191]},"available":true,"name":"Crystal Hair Eraser - Single","public_title":"Single","options":["Single"],"price":3900,"weight":0,"compare_at_price":0,"inventory_management":"shopify","barcode":"","featured_media":{"alt":null,"id":25225257582767,"position":1,"preview_image":{"aspect_ratio":1.0,"height":3160,"width":3160,"src":"https:\/\/cdn.shopify.com\/s\/files\/1\/0609\/1531\/8959\/products\/IMG_9234.jpg?v=1644475266"}},"requires_selling_plan":false,"selling_plan_allocations":[]},{"id":41175756341423,"title":"Duo","option1":"Duo","option2":null,"option3":null,"sku":"BLM2","requires_shipping":true,"taxable":true,"featured_image":{"id":32895646433455,"product_id":7105770193071,"position":1,"created_at":"2022-02-09T22:41:03-08:00","updated_at":"2022-02-09T22:41:06-08:00","alt":null,"width":3160,"height":3160,"src":"https:\/\/cdn.shopify.com\/s\/files\/1\/0609\/1531\/8959\/products\/IMG_9234.jpg?v=1644475266","variant_ids":[41175756308655,41175756341423,41175756374191]},"available":true,"name":"Crystal Hair Eraser - Duo","public_title":"Duo","options":["Duo"],"price":6700,"weight":0,"compare_at_price":7800,"inventory_management":"shopify","barcode":"","featured_media":{"alt":null,"id":25225257582767,"position":1,"preview_image":{"aspect_ratio":1.0,"height":3160,"width":3160,"src":"https:\/\/cdn.shopify.com\/s\/files\/1\/0609\/1531\/8959\/products\/IMG_9234.jpg?v=1644475266"}},"requires_selling_plan":false,"selling_plan_allocations":[]},{"id":41175756374191,"title":"Trio","option1":"Trio","option2":null,"option3":null,"sku":"BLM3","requires_shipping":true,"taxable":true,"featured_image":{"id":32895646433455,"product_id":7105770193071,"position":1,"created_at":"2022-02-09T22:41:03-08:00","updated_at":"2022-02-09T22:41:06-08:00","alt":null,"width":3160,"height":3160,"src":"https:\/\/cdn.shopify.com\/s\/files\/1\/0609\/1531\/8959\/products\/IMG_9234.jpg?v=1644475266","variant_ids":[41175756308655,41175756341423,41175756374191]},"available":true,"name":"Crystal Hair Eraser - Trio","public_title":"Trio","options":["Trio"],"price":8800,"weight":0,"compare_at_price":11700,"inventory_management":"shopify","barcode":"","featured_media":{"alt":null,"id":25225257582767,"position":1,"preview_image":{"aspect_ratio":1.0,"height":3160,"width":3160,"src":"https:\/\/cdn.shopify.com\/s\/files\/1\/0609\/1531\/8959\/products\/IMG_9234.jpg?v=1644475266"}},"requires_selling_plan":false,"selling_plan_allocations":[]}]
