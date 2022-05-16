@@ -1,0 +1,318 @@
+{% if section.settings.show_section %}
+    
+{%- assign blog = blogs[section.settings.blog] -%}
+{%- assign productCollectionsTitles = product.collections | map: 'title' | downcase -%}
+{%- assign productCollectionsHandles = product.collections | map: 'handle' | downcase -%}
+{%- assign current_post = 1 -%}
+{%- assign post_limit = section.settings.post_limit -%}
+
+{% case section.settings.colors %}
+  {% when 'white' %}
+    <div class="homepage-sections-wrapper homepage-sections-wrapper--white featured-blog-section">
+  {% when 'light' %}
+    <div class="homepage-sections-wrapper homepage-sections-wrapper--light featured-blog-section">
+  {% when 'accent' %}
+    <div class="homepage-sections-wrapper homepage-sections-wrapper--accent featured-blog-section">
+  {% when 'dark' %}
+    <div class="homepage-sections-wrapper homepage-sections-wrapper--dark featured-blog-section">
+{% endcase %}
+
+<div class="container">
+    <div class="row">
+        <div class="page-width col-md-12">
+            {% if section.settings.title != blank %}
+            <div class="title-bar {{ settings.title-bar-styling }} custom-font">
+                <h2><span>{{ section.settings.title }}</span></h2>
+                <div class="clear"></div>
+            </div>
+            {% endif %}
+
+            {%- assign blog = blogs[section.settings.blog] -%}
+            {%- assign post_limit = section.settings.post_limit | default: 3 -%}
+
+
+            {% unless blog.empty? %}
+            <div class="row grid--blog featured-blog__articles">
+                {% paginate blog.articles by 500 %}
+                {% for article in blog.articles %}
+                               
+                    {% if current_post > post_limit %}
+                        {% break %}
+                    {% endif %}
+                    {% assign categTag = blank %}
+                    {% assign isRelated = false %}
+
+                    {% for tag in article.tags %}
+                        {% if tag contains 'categ__' %}
+                            {% continue %}
+                        {% endif %}
+
+                        {% assign downcase_tag = tag | downcase %}
+                        {% assign categTag = tag %}
+
+                        {% if productCollectionsTitles contains downcase_tag or productCollectionsHandles contains downcase_tag %}
+                            {% assign isRelated = true %}
+                            {%- assign current_post = current_post | plus: 1 -%}
+                            {% break %}
+                        {% endif %}
+
+                        {%- comment -%}Hack to map vitalité to vitamine D{%- endcomment -%}
+                        {% if productCollectionsHandles contains 'vitamine-d' and downcase_tag == 'categ__vitalité' and isRelated == false %}
+                            {% assign isRelated = true %}
+                            {%- assign current_post = current_post | plus: 1 -%}
+                            {% break %}
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if isRelated %}
+
+                
+                        {% case post_limit %}
+                            {% when 1 %}
+                                <div class="col-md-6 col-md-offset-3">
+                            {% when 2 %}
+                                <div class="col-md-6 col-sm-6">
+                            {% when 3 %}
+                                <div class="col-md-4">
+                            {% when 4 %}
+                                <div class="col-md-3">
+                        {% endcase %}
+                        {% if section.settings.show_blog_images %}
+                            {% if article.image %}
+                                <div class="article-image">
+                                    <a href="{{ article.url }}">
+                                        {% render 'image', with img: article.image, alt: article.title, widths: '235, 340' %}
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+
+                        <div class="blog-title-wrapper homepage-blog-title-wrapper{% if article.image %} article-image-in-header{% endif %}">
+                            {% if section.settings.show_date == true %}
+                                <p class="blog-publish-date"><time class="updated"
+                                        datetime="{{ article.published_at | date: format: 'long' }}"
+                                        pubdate>{{ article.published_at | time_tag: format: 'month_day_year' }}</time>
+                                </p>
+                            {% endif %}
+                            {% if section.settings.show_tag == true %}
+                                {%- comment -%}
+                                {% assign categTag = blank %}
+                                {% for tag in article.tags %}
+                                    {% if tag contains 'categ__' %}
+                                        {% assign categTag = tag | remove : 'categ__' %}
+                                    {% endif %}
+                                {% endfor %}
+                                {%- endcomment -%}
+                                {% if categTag != blank %}
+                                    {% render 'article-tags', categTag: categTag %}
+                                {% endif %}
+                            {% endif %}
+                            <div class="blog-title--divider"></div>
+                            <h2>{{ article.title }}</h2>
+                            {% if section.settings.cta != blank %}
+                                <!-- <a class="bog-cta" href="{{article.url}}">{{ section.settings.cta }}</a> -->
+                                <a class="btn_read_more" href="{{article.url}}">{{ section.settings.cta }}</a>
+                            {% endif %}
+                        </div>
+                        {% if section.settings.show_excerpt == true %}
+                            <div class="rte home-blog-excerpt">
+                                {% if article.excerpt.size > 0 %}
+                                {{ article.excerpt }}
+                                {% else %}
+                                {{ article.content | strip_html | truncatewords: 25 }}
+                                {% endif %}
+                            </div>
+                        {% endif %}
+
+                        </div>
+                    
+                    {% endif %}
+                {% endfor %}
+                {% endpaginate %}
+            </div>
+            {% endunless %}
+            </div>
+        </div>
+        {% if section.settings.all_articles_btn_label != blank %}
+            <div class="read-all-articles--homepage">
+                <a href="{{ blog.url }}">
+                    {{ section.settings.all_articles_btn_label }}
+                </a>
+            </div>
+        {% endif %}
+	</div>
+             
+</div>
+
+<style>
+  @media(min-width: 992px) {
+    #shopify-section-{{ section.id }} .featured-blog__articles .col-md-4:nth-child(1) .bog-cta {
+      vertical-align: {{ section.settings.cta1_vertical_align }}px;
+    }
+    #shopify-section-{{ section.id }} .featured-blog__articles .col-md-4:nth-child(2) .bog-cta {
+      vertical-align: {{ section.settings.cta2_vertical_align }}px;
+    }
+    #shopify-section-{{ section.id }} .featured-blog__articles .col-md-4:nth-child(3) .bog-cta {
+      vertical-align: {{ section.settings.cta3_vertical_align }}px;
+    }
+
+  }
+  #shopify-section-{{ section.id }} .blog-publish-tag {
+    background-color: {{ section.settings.tag_background_color }};
+  }
+  #shopify-section-{{ section.id }} a.read-all-articles--homepage {
+    color: {{ section.settings.all_articles_btn_textcolor }};
+    background-color: {{ section.settings.all_articles_btn_bgcolor }};
+  }
+</style>
+{% endif %}
+
+{% schema %}
+{
+    "name":"Featured articles",
+    "settings":[
+        {
+            "type":"checkbox",
+            "id":"show_section",
+            "label":"Enabled",
+            "default":false
+        },
+        {
+            "type":"header",
+            "content":"Featured articles"
+        },
+        {
+        "type":"select",
+        "id":"colors",
+        "label":"Color scheme",
+        "default":"white",
+        "options":[
+            {
+            "value":"white",
+            "label":"White"
+            },
+            {
+            "value":"light",
+            "label":"Light"
+            },
+            {
+            "value":"accent",
+            "label":"Feature"
+            },
+            {
+            "value":"dark",
+            "label":"Dark"
+            }
+        ],
+        "info":"The colors in each 'scheme' can be changed in the 'Theme settings' > 'Colors' section of your admin"
+        },
+        {
+            "type":"textarea",
+            "id":"title",
+            "label":"Heading",
+            "default":"From the blog"
+        },
+        {
+            "id":"blog",
+            "type":"blog",
+            "label":"Blog"
+        },
+        {
+            "type":"range",
+            "id":"post_limit",
+            "min":1,
+            "max":3,
+            "step":1,
+            "label":"Posts",
+            "default":3
+        },
+        {
+            "type":"checkbox",
+            "id":"show_blog_images",
+            "label":"Show post images",
+            "default":true
+        },
+        {
+            "type":"text",
+            "id":"cta",
+            "label":"cta label",
+            "default":"Lire l'article ->"
+        },
+        {
+            "type":"range",
+            "id":"cta1_vertical_align",
+            "min":-50,
+            "max":50,
+            "step":1,
+            "unit":"px",
+            "label":"cta1 vertical align",
+            "default":0
+        },
+        {
+            "type":"range",
+            "id":"cta2_vertical_align",
+            "min":-50,
+            "max":50,
+            "step":1,
+            "unit":"px",
+            "label":"cta2 vertical align",
+            "default":0
+        },
+        {
+            "type":"range",
+            "id":"cta3_vertical_align",
+            "min":-50,
+            "max":50,
+            "step":1,
+            "unit":"px",
+            "label":"cta3 vertical align",
+            "default":0
+        },
+        {
+            "type":"checkbox",
+            "id":"show_excerpt",
+            "label":"show blog's excerpt",
+            "default":true
+        },
+        {
+            "type":"checkbox",
+            "id":"show_date",
+            "label":"show date",
+            "default":true
+        },
+        {
+            "type":"checkbox",
+            "id":"show_tag",
+            "label":"show blog tag",
+            "default":false
+        },
+        {
+            "type":"color",
+            "id":"tag_background_color",
+            "label":"tag background color",
+            "default":"#ffffff"
+        },
+        {
+            "type":"header",
+            "content":"All articles button"
+        },
+        {
+            "type":"text",
+            "id":"all_articles_btn_label",
+            "label":"Button label"
+        },
+        {
+            "type":"color",
+            "id":"all_articles_btn_bgcolor",
+            "label":"Button background color",
+            "default":"#1DB67A"
+        },
+        {
+            "type":"color",
+            "id":"all_articles_btn_textcolor",
+            "label":"Button text color",
+            "default":"#ffffff"
+        }
+    ]
+}
+{% endschema %}

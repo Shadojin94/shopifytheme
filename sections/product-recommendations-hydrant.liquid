@@ -1,0 +1,103 @@
+{%- if section.settings.show_product_recommendations and product.metafields.sf_recommendations.size > 0 %}
+<section class="immersion-section" data-product-id="{{ product.id }}" data-limit="4">
+    <div class="container container-immersion">
+        <div class="row">
+            <div class="immersion-title col-md-6">
+                <h2>{{ product.metafields.sf_recommendations.title }}</h2>
+                <p>{{ product.metafields.sf_recommendations.description }}</p>
+            </div>
+            <div class="immersion-section-wrapper col-md-6">
+                <div class="immersion-slider" data-section-id="{{ section.id }}">
+                    {%- for i in (1..10) -%}
+                        {%- capture sf_product_img_id -%}product_img_{{i}}{%- endcapture -%}
+                        {%- assign sf_product_img = product.metafields.sf_recommendations[sf_product_img_id] -%}
+                        {%- capture sf_product_url_id -%}product_url_{{i}}{%- endcapture -%}
+                        {%- assign sf_product_url = product.metafields.sf_recommendations[sf_product_url_id] -%}
+                        {%- capture sf_product_title_id -%}product_title_{{i}}{%- endcapture -%}
+                        {%- assign sf_product_title = product.metafields.sf_recommendations[sf_product_title_id] -%}
+                        {%- capture sf_product_subtitle_id -%}product_subtitle_{{i}}{%- endcapture -%}
+                        {%- assign sf_product_subtitle = product.metafields.sf_recommendations[sf_product_subtitle_id] -%}
+                        {%- capture sf_product_btn_id -%}product_btn_{{i}}{%- endcapture -%}
+                        {%- assign sf_product_btn = product.metafields.sf_recommendations[sf_product_btn_id] -%}
+                        
+                        {% if sf_product_title != blank and sf_product_url != blank %}
+                        {%- assign sf_product_img =  sf_product_img | remove: "https:" %} 
+                            <div class="immersion-slide-inner">
+                                <a href="{{ sf_product_url }}"
+                                    class="immersion-slide">
+                                    <div class="immersion-slide-img">
+                                        <img loading="lazy" data-twic-src="image:{{ sf_product_img }} " alt="{{ sf_product_title }}">
+                                    </div>
+                                </a>
+
+                                <div class="immersion-slide--product-title">
+                                    <div class="immersion-slide--description">
+                                        <p class="chip">{{ sf_product_subtitle }}</p>
+                                    </div>
+                                    <h5>{{ sf_product_title }}</h5>
+                                    <a href="{{ sf_product_url }}"
+                                        class="immersion-slide--button immersion-slide--button-pack">
+                                        {{ sf_product_btn }}
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {%- endfor -%}
+                </div>
+                <a href="javascript:void(0);" role="button"
+                    class="immersion-section__slider-arrow immersion-section__slider-arrow--prev slider-arrow slick-arrow"
+                    data-pdp-timeline-prev="" style="" ecl="true">
+                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" ecl="true">
+                        <circle cx="14" cy="14" r="12.75" transform="rotate(-90 14 14)" stroke="black" stroke-width="2.5" ecl="true"></circle>
+                        <path d="M20.0551 14.3273C20.2178 14.1394 20.2178 13.8606 20.0551 13.6727L16.378 9.4267C16.0749 9.07674 15.5 9.29108 15.5 9.75402L15.5 18.246C15.5 18.7089 16.0749 18.9233 16.378 18.5733L20.0551 14.3273Z"
+                            fill="black" stroke="black" ecl="true"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M15 16H7V12H15V16Z" fill="black" ecl="true">
+                        </path>
+                    </svg>
+                </a>
+
+                <a href="javascript:void(0);" role="button"
+                    class="immersion-section__slider-arrow immersion-section__slider-arrow--next slider-arrow slick-arrow"
+                    data-pdp-timeline-next="" style="" ecl="true">
+                    <svg width="28" height="28" viewBox="0 0 28 28"
+                        fill="none" xmlns="http://www.w3.org/2000/svg" ecl="true">
+                        <circle cx="14" cy="14" r="12.75" transform="rotate(-90 14 14)" stroke="black" stroke-width="2.5" ecl="true"></circle>
+                        <path d="M20.0551 14.3273C20.2178 14.1394 20.2178 13.8606 20.0551 13.6727L16.378 9.4267C16.0749 9.07674 15.5 9.29108 15.5 9.75402L15.5 18.246C15.5 18.7089 16.0749 18.9233 16.378 18.5733L20.0551 14.3273Z"
+                            fill="black" stroke="black" ecl="true"></path>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M15 16H7V12H15V16Z" fill="black" ecl="true">
+                        </path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if product.metafields.sf_recommendations['bg_color_1'] != blank or product.metafields.sf_recommendations['bg_color_2'] != blank %}
+    <style>
+        .immersion-section { 
+            {% if product.metafields.sf_recommendations['bg_color_1'] != blank %}
+                --immersion-bg-color-first: {{ product.metafields.sf_recommendations['bg_color_1'] }};
+            {% endif %}
+            {% if product.metafields.sf_recommendations['bg_color_2'] != blank %}
+                --immersion-bg-color-second: {{ product.metafields.sf_recommendations['bg_color_2'] }};
+            {% endif %}
+        }
+    </style>
+{% endif %}
+
+{% endif %}
+
+{% schema %}
+{
+    "name": "Product recommendations",
+    "settings": [
+        {
+            "type": "checkbox",
+            "id": "show_product_recommendations",
+            "label": "Show recommendations",
+            "default": true
+        }
+    ]
+}
+{% endschema %}
