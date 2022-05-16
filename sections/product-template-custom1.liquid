@@ -10,41 +10,6 @@
 }
 {%- endcapture -%}
 
-<!-- Variants -->
-<div class="swatches-wrapper swatches-wrapper-ab-testing">
-    <h5 class="desktop-only swatched-title-desktop-only" style="color:#000;">{{ section.settings.variants_title }}</h5>
-    <div class="Variants__flex">
-        {% for variant in product.variants %}
-        <div class="variant__wrapper">
-            
-            {% assign titleVariant = variant.title | split: ' - ' %}
-            {%- capture sf_variant_label_id -%}label_{{forloop.index}}{%- endcapture -%}
-            {%- assign sf_variant_label = product.metafields.sf_variant[sf_variant_label_id] -%}
-            <div class="variant__box variant__box_ab_testing{% if forloop.index == 1 %} swatch-active{% endif %}" data-variant="{{ variant.id }}">
-                <div class="variant_detail"  data-variant-price="{{ variant.price | money }}" 
-                data-variant-compare-price="{{ variant.compare_at_price | money }}">
-                    <p class="pack" style="color:#000;">{{ titleVariant[0] }}</p>
-                    <p class="variant__title2" style="color:#000;">{{ titleVariant[1] }}</p>
-                    <p class="variant_price" style="color:#000;">{{ variant.price | money }}</p>
-                    {% if variant.compare_at_price > variant.price %}
-                        <p class="variant_price" style="color:#ff3b30;font-size:14px;text-decoration:line-through;">{{ variant.compare_at_price | money }}</p>
-                    {% endif %}
-                    {%- if sf_variant_label != blank -%}
-                        <div class="variant_discount" style="background-color:#1db67a;">{{ sf_variant_label }}</div>
-                    {% elsif forloop.index > 1 %}
-                        <div class="variant_discount" style="background-color:#1db67a;">
-                            {%- capture sf_variant_label_trans_id -%}products.variants.highlight_{{forloop.index}}{%- endcapture -%}
-                            {{ sf_variant_label_trans_id | t }}
-                        </div>
-                    {% endif %}
-                    
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</div>
-
 <section class="Product Product--{{ section.settings.image_size }}" data-section-id="{{ section.id }}" data-section-type="product" data-section-settings='{{ section_settings }}'>
   <div class="Product__Wrapper">
     {%- capture action_list_items -%}
